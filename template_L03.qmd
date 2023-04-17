@@ -1,0 +1,210 @@
+---
+title: "L03 Feauture Engineering Revisited"
+subtitle: "Data Science 3 with R (STAT 301-3)"
+author: "YOUR NAME"
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: show
+    link-external-newwindow: true
+    
+execute:
+  warning: false
+
+from: markdown+emoji 
+---
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+To link to your github **repo**sitory, appropriately edit the example link below. Meaning replace `https://your-github-repo-url` with your github repo url. Suggest verifying the link works before submitting.
+
+[https://your-github-repo-url](https://your-github-repo-url)
+
+:::
+
+## Overview
+
+The main goal of this lab is to improve and expand feature engineering skills. We also want to develop a better sense of how to handle missing data.
+
+## Dataset
+
+We will be using the `titanic.csv` dataset contained in the **data** subdirectory. `titanic_codebook.html` provides a quick overview of the data.
+
+## Exercises
+
+### Exercise 1
+
+When choosing and deploying feature engineering steps, what should an analyst consider first? Or more broadly stated, what is the purpose of feature engineering? 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 2
+
+When is it necessary to dummy encode factor variables? Provide examples of when it is necessary and when it is unnecessary.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 3
+
+When dummy encoding a factor variable with a large number of levels/categories, what are the two filtering steps we could implement to handle rarely occurring levels/categories? When should they be applied within our feature engineering recipe? Should identify the `step_` functions you would use to deploy these methods.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+If we decided that we wanted to avoid filtering our rarely occurring levels/categories, then what is one option/alternative that we have?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 4
+
+Name 2 model types that are sensitive to skewed predictors or predictors with extreme/unusual values (i.e. outliers). 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+The Box-Cox (`step_BoxCox()`) and Yeo-Johnson (`step_YeoJohnson()`) transformations are useful for handling skewness. When must you pick the Yeo-Johnson transformation over the Box-Cox transformation to handle skewness?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+Are there any model types that are immune to such issues with their predictors? If so, name one.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 5
+
+When is a standardization process (think scaling) essential? Provide an example of when it is essential.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Execise 6
+
+Name 2 model types that are adversely affected by **highly** correlated predictor variables. Name two methods that could be used to help with this issue --- identify their `step_` functions.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 7
+
+Why is it essential that we address missing data? And, what is the first and most important question when encountering missing data?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 8
+
+One framework to view missing values is through the lens of the mechanisms of missing data. What are three common mechanisms for missing data? Also provide a short description of each. 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 9
+
+Three methods to deal with missingness are deletion of data, encoding missingness, and imputation. 
+
+When using deletion of data, we may face the choice of deleting predictors (columns) or samples/observations (rows). In general, which should we identify first for removal, predictors or samples with high degree of missingness? Explain.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+When can we use the method of encoding missingness?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+Name at least three imputation methods you can use in `tidymodels`? Identify their `step_` function. Above what *"line-of-dignity"* threshold is too much data imputation for a predictor/column?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 10 
+
+We plan to train a few random forest model for `survived` in the `titanic.csv` dataset. Begin by setting up the initial split and folds (5 fold, 3 repeats) --- see `setup_titanic.R`). 
+
+We should explore missingness first. Using the `naniar` package, explore the nature of missingness in the training data. Use both graphics and summary tables. Display this work.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+How would you suggest we handle the missingness that is present?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+### Exercise 11
+
+From Exercise 10, it should be clear that 1 variable should just be deleted due to its missingness and we could use imputation methods for the others. Other variables to remove should be id variables like `name` and `passenger_id`. We could also remove `ticket` --- or simply update their roles.
+
+Train at least 2 random forest models using different imputation methods for each (only change the imputation steps between the two). Does one of your imputation methods result in a significantly better model?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+:::
+
+## Challenge
+**Not Required**
+
+Take your elastic net tuning work on the wildfires data from the previous lab and add a principal component step (could try kernal pca as well) in order to reduce the dimensionality after adding all interactions. Try tuning the number of components as well. 
+
+Does adding a dimension reduction step improve the classification?
+
+Consider trying partial least squares and/or independent component analysis too.
