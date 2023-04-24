@@ -1,0 +1,307 @@
+---
+title: "L03 Feauture Engineering Revisited"
+subtitle: "Data Science 3 with R (STAT 301-3)"
+author: "Alani Cox-Caceres"
+
+format:
+  html:
+    toc: true
+    embed-resources: true
+    code-fold: show
+    link-external-newwindow: true
+    
+execute:
+  warning: false
+  echo: false
+
+from: markdown+emoji 
+---
+
+::: {.callout-tip icon=false}
+
+## Github Repo Link
+
+[https://github.com/STAT301-3-2023SP/L03-feature-engineering-revisited-alanicc](https://github.com/STAT301-3-2023SP/L03-feature-engineering-revisited-alanicc)
+
+:::
+
+## Exercises
+
+### Exercise 1
+
+When choosing and deploying feature engineering steps, what should an analyst consider first? Or more broadly stated, what is the purpose of feature engineering? 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+Feature engineering is used to identify important and impactful aspects of raw data that can then be used in machine learning to make predictions about that dataset.
+
+- First, an analyst should understand the data being used, and consider the problem they are attempting to solve.
+
+- Then, the analyst should choose which features of the data are relevant to the problem being solved. The feature chosen would make sense with the model and its specific abilities. 
+
+- After selecting the features, the analyst should consider if there are any transformations that need to be made. this is when the `step` functions become helpful for transformations such as scaling, balancing, and further encoding. 
+
+- Finally, a model should be chosen that would best fit the feature engineering used. Although the analyst should already have a model in mind, completing the feature engineering process should reaffirm the initial idea, or reveal contradictions to the previous model choice. 
+
+:::
+
+### Exercise 2
+
+When is it necessary to dummy encode factor variables? Provide examples of when it is necessary and when it is unnecessary.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- Dummy encoding is necessary with variables that have no order or ranking. These variables instead have unique values that represent different categories. This includes elastic net models, and support vector machines.
+
+- Dummy encoding is not necessary with variables that have an order or ranking. It doesn't require dummy encoding because the variables already have a inherent representations for the model being used. Dummy encoding is not necessary with tree-based methods.
+
+:::
+
+### Exercise 3
+
+When dummy encoding a factor variable with a large number of levels/categories, what are the two filtering steps we could implement to handle rarely occurring levels/categories? When should they be applied within our feature engineering recipe? You should identify the `step_` functions you would use to deploy these methods.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- The two steps that can be used to handle rarely occurring levels or categories are `step_novel()` and `step_other()`. The first of these, `step_novel()`, can be used to remove rarely occurring levels/categories in the data. Following this step, `step_other()` will group these rare levels/categories into a separate category. These functions should be applied when creating the recipe after splitting the testing and training data. 
+
+:::
+
+If we decided that we wanted to avoid filtering our rarely occurring levels/categories, then what is one option/alternative that we have?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- If we wanted to entirely avoid filtering out rarely occurring levels/categories, we could use tree-based models such as random forest or boosted-tree. 
+
+:::
+
+### Exercise 4
+
+Name 2 model types that are sensitive to skewed predictors or predictors with extreme/unusual values (i.e. outliers). 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- linear regression, svm, and knn are all sensitive to extreme outliers
+
+:::
+
+The Box-Cox (`step_BoxCox()`) and Yeo-Johnson (`step_YeoJohnson()`) transformations are useful for handling skewness. When must you pick the Yeo-Johnson transformation over the Box-Cox transformation to handle skewness?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- You should use `step_Yeojohnson()` over `step_BoxCox()` when dealing with any negative numeric variables. Box-Cox cannot handle skewness with negative numbers, so the Yeo-Johnshon transformation would be a better option in this situation. 
+
+:::
+
+Are there any model types that are immune to such issues with their predictors? If so, name one.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- random forests (tree-based models) are resistant to outliers
+
+:::
+
+### Exercise 5
+
+When is a standardization process (think scaling) essential? Provide an example of when it is essential.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- A standardization process is essential when there are different scales being used for the numeric predictors. This can make it difficult to compare these predictors since they are measured on different scales. 
+
+- For example, if we had a dataset about planes, and we were comparing different models with factors such as weight, acceleration, and fuel efficiency. all numeric values should be standardized to ensure that the values are comparable. Scaling the numeric values allows us to properly analyze the effect size of different variables relative to each other.
+
+:::
+
+### Execise 6
+
+Name 2 model types that are adversely affected by **highly** correlated predictor variables. Name two methods that could be used to help with this issue --- identify their `step_` functions.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- regression (linear/logistic); svm (lead to unstable predictions); random forest (overfitting and large computation; neural networks (slow convergence leading to long run times and poorer performance)
+
+:::
+
+### Exercise 7
+
+Why is it essential that we address missing data? And, what is the first and most important question when encountering missing data?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- It is essential to assess missing data because it can have a very large impact on the accuracy of a dataset. If missing data is not addressed, one may not account for the ways it can affect the dataset. Missing data can lead to less accurate or decreased model performance, biased estimates, and unbalanced datasets. If missing data is not addressed, he results obtained from the dataset may not reflect tthe data accurately. 
+
+- The first and most important question to ask is; "why is the data missing?" It's crucial to understand why data is missing before determining the best way to address it.
+
+:::
+
+### Exercise 8
+
+One framework to view missing values is through the lens of the mechanisms of missing data. What are three common mechanisms for missing data? Also provide a short description of each. 
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- The three common mechanisms for missing data are:
+
+- Missing Completely at Random (MCAR): In this mechanism, the missing data is unrelated to any variables in the dataset. This means that the probability of any data missing is the same throughout the dataset.
+
+- Missing at Random (MAR): In this mechanism, the missing data is related to the observed variables, but not the unobserved variables in the dataset. This means that the probability of any data missing is dependent on the other observed variables. 
+
+- Missing Not at Random (MNAR): In this mechanism, the missing data is related to the unobserved variables in the dataset, which means that the probability of any data missing is dependent on the other unobserved variables. 
+
+:::
+
+### Exercise 9
+
+Three methods to deal with missingness are deletion of data, encoding missingness, and imputation. 
+
+When using deletion of data, we may face the choice of deleting predictors (columns) or samples/observations (rows). In general, which should we identify first for removal, predictors or samples with high degree of missingness? Explain.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- Before removing samples/observations, we should remove the predictors with a high degree of missingness because these columns are not usually very helpful for the prediction. If we were to remove the samples/observations first, it may lead to a smaller sample size that could create bias in the model. 
+
+:::
+
+When can we use the method of encoding missingness?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- We can use this method when the missingness does not seem like it will be of any use to inform the model/prediction. 
+
+:::
+
+Name at least three imputation methods you can use in `tidymodels`? Identify their `step_` function. Above what *"line-of-dignity"* threshold is too much data imputation for a predictor/column?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- `step_impute_linear()`
+
+- `step_impute_mean()`
+
+- `step_impute_knn()`
+
+- Anything above the 20% line-of-dignity threshold is too much data imputation for a predictor/column
+
+:::
+
+### Exercise 10 
+
+We plan to train a few random forest model for `survived` in the `titanic.csv` dataset. Begin by setting up the initial split and folds (5 fold, 3 repeats) --- see `setup_titanic.R`). 
+
+We should explore missingness first. Using the `naniar` package, explore the nature of missingness in the training data. Use both graphics and summary tables. Display this work.
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+The table(s) below show the distribution of missingness throughout the dataset, and the graph at the end is a visualization of this missingness.
+
+```{r}
+#| message: false
+#| warning: false
+
+# load package(s) ----
+library(tidyverse)
+library(tidymodels)
+library(tictoc)
+library(naniar)
+library(knitr)
+library(kableExtra)
+
+# handle common conflicts
+tidymodels_prefer()
+
+# Seed
+set.seed(3013)
+
+## load data ----
+titanic <- read_csv("data/titanic.csv") %>%
+  janitor::clean_names() %>%
+  mutate(
+    survived = factor(survived, levels = c("Yes", "No")),
+    pclass = factor(pclass)
+  )
+
+
+titanic_split <- initial_split(data = titanic, prop = 0.80, strata = survived)
+
+titanic_test <- testing(titanic_split)
+
+titanic_train <- training(titanic_split)
+
+#titanic folds
+titanic_fold <- vfold_cv(titanic_train, v = 5, repeats = 3, 
+                         strata = survived)
+
+save(titanic_fold, titanic_train, titanic_test, file = "results/titanic_setup.rda")
+
+
+#skim 
+skimr::skim_without_charts(titanic_train)
+
+#kable of missing data
+titanic_train %>% 
+  miss_var_summary() %>% 
+  kable()
+
+#visualize
+titanic %>% 
+  vis_miss()
+
+```
+
+
+:::
+
+How would you suggest we handle the missingness that is present?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+- To handle the missingness present, I would keep age but impute it in the recipe, and remove cabin in the data since it is over the 20% threshold.
+
+:::
+
+### Exercise 11
+
+From Exercise 10, it should be clear that 1 variable should just be deleted due to its missingness and we could use imputation methods for the others. Other variables to remove should be id variables like `name` and `passenger_id`. We could also remove `ticket` --- or simply update their roles.
+
+Train at least 2 random forest models using different imputation methods for each (only change the imputation steps between the two). Does one of your imputation methods result in a significantly better model?
+
+::: {.callout-tip icon=false}
+
+## Solution
+
+After running both models, I would say that they performed rather similarly. For the first model, I used `step_imput_mode()`, and for the second one I used `step_impute_knn()`. As for metrics, the second model performed slightly better with a roc_auc score of 0.856, whereas the first had a score of 0.855. 
+
+:::
